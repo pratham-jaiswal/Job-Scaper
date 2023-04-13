@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Job Compatibility Finder</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="https://kit.fontawesome.com/6f42fc440c.js" crossorigin="anonymous"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/select2.min.css') }}"/>
+  </head>
+  <body>
+    <h1>Job Compatibility Finder</h1>
+    <form>
+      <div class="user_input">
+        <div>
+          <label for="category">Category:</label>
+          <select id="category" name="category">
+            <option></option>
+          </select>
+        </div>
+        <div>
+          <label for="location">Location:</label>
+          <select id="location" name="location">
+            <option></option>
+          </select>
+        </div>
+      </div>
+
+      <div class="sorting">
+        <div>
+          <label>Sort by:</label>
+        </div>
+        <div class="sorting-options">
+          <div>
+            <input type="radio" name="sort" value="min_salary"/> Min Salary (Highest to Lowest)
+          </div>
+          <div>
+            <input type="radio" name="sort" value="max_salary"/> Max Salary (Highest to Lowest)
+          </div>
+        </div>
+      </div>
+
+      <div class="filtering">
+        <label>Filter:</label>
+        <input type="checkbox" name="filter" value="exclude_na"/> Exclude "N/A"
+      </div>
+      <div class="action-buttons">
+        <button type="button" id="search">Search</button>
+        <button type="button" id="clear">Clear</button>
+      </div>
+    </form>
+
+    <div id="loading" style="display: none;">
+      <i class="fa fa-spinner fa-spin"></i> Loading...
+    </div>
+    <div id="results"></div>
+
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $("#category").select2({
+          width: '30vw',
+          ajax: {
+            url: "/suggest_categories",
+            dataType: "json",
+            delay: 250,
+            processResults: function (data) {
+              var results = [];
+              $.each(data, function (index, item) {
+                results.push({ id: item, text: item });
+              });
+              return { results: results };
+            },
+            cache: true,
+          },
+          minimumInputLength: 1,
+        });
+
+        $("#location").select2({
+          width: '30vw',
+          ajax: {
+            url: "/suggest_locations",
+            dataType: "json",
+            delay: 250,
+            processResults: function (data) {
+              var results = [];
+              $.each(data, function (index, item) {
+                results.push({ id: item, text: item });
+              });
+              return { results: results };
+            },
+            cache: true,
+          },
+          minimumInputLength: 1,
+        });
+
+        $("#search").click(function () {
+          var category = $("#category").val();
+          var location = $("#location").val();
+          var sort = $('input[name="sort"]:checked').val();
+          var filter = $('input[name="filter"]:checked').val();
+
+          $('#loading').show();
+          $.post(
+            "/search",
+            {
+              category: category,
+              location: location,
+              sort: sort,
+              filter: filter,
+            },
+            function (data) {
+              $('#loading').hide();
+
+              $("#results").html(data.df);
+            }
+          );
+        });
+
+        $("#clear").click(function () {
+          $("#category").val(null).trigger("change");
+          $("#location").val(null).trigger("change");
+          $('input[name="sort"]').prop("checked", false);
+          $('input[name="filter"]').prop("checked", false);4
+          $("#results").empty();
+        });
+      });
+    </script>
+  </body>
+</html>
