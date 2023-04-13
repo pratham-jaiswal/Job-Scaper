@@ -1,0 +1,52 @@
+/* Modify the color of the search box */
+.select2-search__field {
+    background-color: white !important;
+}
+
+/* Modify the color of the dropdown */
+.select2-results__option {
+    background-color: white !important;
+    color: black !important;
+}
+
+/* Modify the color of the hovered option */
+.select2-results__option:hover {
+    background-color: rgb(225, 0, 225) !important;
+}
+
+/* Modify the color of the selected option */
+.select2-results__option[aria-selected="true"] {
+    background-color: rgb(225, 0, 225) !important;
+}
+
+/* Modify the color of the placeholder text */
+.select2-selection__placeholder {
+    color: black !important;
+}
+
+/* Modify the color of the selected option text */
+.select2-selection__rendered {
+    color: black !important;
+}
+
+/* Modify the color of the dropdown scrollbar */
+.select2-results__options {
+    overflow-y: scroll !important;
+    scrollbar-color: rgb(225, 0, 225) transparent !important;
+    scrollbar-width: thin !important;
+}
+
+/* Modify the color of the dropdown scrollbar thumb */
+.select2-results__options::-webkit-scrollbar-thumb {
+    background-color: rgb(225, 0, 225) !important;
+}
+
+/* Modify the color of the dropdown scrollbar thumb on hover */
+.select2-results__options::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(225, 0, 225) !important;
+}
+
+/* Modify the color of the dropdown scrollbar track */
+.select2-results__options::-webkit-scrollbar-track {
+    background-color: transparent !important;
+}
