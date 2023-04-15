@@ -127,3 +127,13 @@ label {
 #results td a:hover{
   color:darkviolet;
 }
+
+.disclaimer{
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+  margin: 3vh 15vw;
+  font-size: 14px;
+  line-height: 1.5;
+  color:rgb(220, 140, 220);
+}
